@@ -7,5 +7,8 @@ class BookingFiltration:
         self.driver = driver
 
     def apply_category_select(self):
-        hotel_check_box = self.driver.find_element(By.NAME, 'ht_id=204')
-        hotel_check_box.click()
+        category_check_box = self.driver.find_element(By.NAME, 'ht_id=204')
+        category_check_box.click()
+
+        rating_check_box = self.driver.find_element(By.NAME, "class=5")
+        rating_check_box.click()
