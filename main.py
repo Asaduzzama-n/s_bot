@@ -8,6 +8,7 @@ with Booking() as bot:
                     check_out_date='2023-08-10')
     bot.select_adults(5)
     bot.click_search()
+    bot.apply_filtrations()
 
 while True:
     pass

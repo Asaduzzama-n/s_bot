@@ -4,6 +4,8 @@ import booking.constants as const
 import os
 from selenium import webdriver
 
+from booking.booking_filteration import BookingFiltration
+
 
 class Booking(webdriver.Chrome):
     def __init__(self, driver_path=r"E:\Python_project\drivers", teardown=False):
@@ -74,3 +76,7 @@ class Booking(webdriver.Chrome):
     def click_search(self):
         self.find_element(By.CSS_SELECTOR, 'button[type="submit"]').click()
 
+    def apply_filtrations(self):
+        filtration = BookingFiltration(driver=self)
+        time.sleep(3)
+        filtration.apply_category_select()
