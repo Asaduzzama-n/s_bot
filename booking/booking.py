@@ -80,3 +80,6 @@ class Booking(webdriver.Chrome):
         filtration = BookingFiltration(driver=self)
         time.sleep(3)
         filtration.apply_category_select()
+        filtration.apply_star_rating(5, 4, 3)
+        time.sleep(2)
+        filtration.sort_price_lowest()
