@@ -5,6 +5,7 @@ import os
 from selenium import webdriver
 
 from booking.booking_filteration import BookingFiltration
+from booking.booking_report import BookingReport
 
 
 class Booking(webdriver.Chrome):
@@ -12,7 +13,9 @@ class Booking(webdriver.Chrome):
         self.teardown = teardown
         self.driver_path = driver_path
         os.environ['PATH'] += self.driver_path
-        super(Booking, self).__init__()
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        super(Booking, self).__init__(options=options)
         self.implicitly_wait(20)
         self.maximize_window()
 
@@ -38,10 +41,8 @@ class Booking(webdriver.Chrome):
         search_field_place.clear()
         search_field_place.send_keys(place_to_go)
         time.sleep(1)
-        # Find all the list items with class "a80e7dc237" under the unordered list
         list_items = self.find_elements(By.CSS_SELECTOR,
                                         'ul[data-testid="autocomplete-results"] li.a80e7dc237')
-        # Choose and click on the second list item (index 1)
         first_list_item = list_items[0]
         first_list_item.click()
 
@@ -64,13 +65,10 @@ class Booking(webdriver.Chrome):
             adult_minus_btn.click()
             adults_value_element = self.find_element(By.ID, 'group_adults')
             adults_value = adults_value_element.get_attribute('value')
-            print(adults_value)
             if int(adults_value) == 1:
-                print('breaking')
                 break
 
         for i in range(count - 1):
-            print(i)
             adult_plus_btn.click()
 
     def click_search(self):
@@ -83,3 +81,15 @@ class Booking(webdriver.Chrome):
         filtration.apply_star_rating(5, 4, 3)
         time.sleep(2)
         filtration.sort_price_lowest()
+
+    #
+    # def report_result(self):
+    #     hotel_boxes = self.find_elements(By.CLASS_NAME, 'd20f4628d0')
+    #     # return hotel_boxes
+    #     # hotel_boxes = self.find_elements(By.CLASS_NAME, 'd4924c9e74')
+    #     report = BookingReport(hotel_boxes)
+    #     report.pull_titles()
+    def report_result(self):
+        hotel_boxes = self.find_elements(By.CLASS_NAME, 'd4924c9e74')
+        report = BookingReport(hotel_boxes)
+        report.pull_titles()
